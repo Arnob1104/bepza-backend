@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "BEPZA Export Document Autofiller",
+  "version": "2.0.0",
+  "description": "Extract data from Commercial Invoice, Undertaking, EXP and Sales Contract PDFs and autofill the BEPZA export permit form.",
+  "author": "Arnob Bokshi — Automation Engineer",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://web.bepza.gov.bd/*",
+    "http://localhost:8000/*",
+    "https://your-backend-domain.com/*",
+    "https://dehxcpnbxyvpavpiuyju.supabase.co/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "BEPZA Autofiller"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://web.bepza.gov.bd/*"],
+      "js": ["content_script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["lib/pdf.min.js", "lib/pdf.worker.min.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

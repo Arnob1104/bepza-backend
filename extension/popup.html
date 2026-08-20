@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>BEPZA Autofiller</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- ── Login screen ─────────────────────────────
+       Shown until the extension holds a valid session. No AI credentials
+       live here or anywhere in this extension — this only authenticates
+       against OUR backend (see auth.js / BACKEND_URL). -->
+  <section id="loginScreen">
+    <header>
+      <h1>BEPZA Autofiller</h1>
+      <p class="sub">Sign in with your assigned account to continue.</p>
+    </header>
+    <form id="loginForm" class="login-form">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" required autocomplete="username" />
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" required autocomplete="current-password" />
+      <p class="error" id="loginError"></p>
+      <button type="submit" id="loginBtn" class="primary">Log in</button>
+    </form>
+  </section>
+
+  <!-- ── Main app (existing UI, unchanged) ── -->
+  <div id="appScreen" class="hidden">
+    <header>
+      <h1>BEPZA Export Document Autofiller</h1>
+      <p class="sub">Upload your 5 documents, review the AI-extracted data, then autofill the BEPZA form.</p>
+    </header>
+
+    <section id="upload-section">
+      <div class="upload-grid">
+        <label class="upload-slot" data-doc="commercialInvoice">
+          <span class="label">Commercial Invoice</span>
+          <input type="file" accept="application/pdf" data-doc="commercialInvoice" />
+          <span class="status">No file</span>
+        </label>
+        <label class="upload-slot" data-doc="undertaking">
+          <span class="label">Undertaking</span>
+          <input type="file" accept="application/pdf" data-doc="undertaking" />
+          <span class="status">No file</span>
+        </label>
+        <label class="upload-slot" data-doc="exp">
+          <span class="label">EXP Form</span>
+          <input type="file" accept="application/pdf" data-doc="exp" />
+          <span class="status">No file</span>
+        </label>
+        <label class="upload-slot" data-doc="salesContract">
+          <span class="label">Sales Contract</span>
+          <input type="file" accept="application/pdf" data-doc="salesContract" />
+          <span class="status">No file</span>
+        </label>
+        <label class="upload-slot" data-doc="packingList">
+          <span class="label">Packing List</span>
+          <input type="file" accept="application/pdf" data-doc="packingList" />
+          <span class="status">No file</span>
+        </label>
+      </div>
+      <button id="extractBtn" disabled>Extract Data</button>
+    </section>
+
+    <section id="review-section" class="hidden">
+      <h2>Review &amp; Edit Extracted Data</h2>
+      <p class="hint">Check every field below — extraction is pattern-based, not perfect. Edit anything before autofilling.</p>
+      <div id="fieldsTable"></div>
+      <div class="actions">
+        <button id="saveDataBtn">Save</button>
+        <button id="autofillBtn" class="primary">Autofill BEPZA Form</button>
+      </div>
+      <p class="hint" id="autofillStatus"></p>
+    </section>
+
+    <footer>
+      <div class="account-row">
+        <span id="accountEmail" class="account-email"></span>
+        <button id="logoutBtn" class="link-btn">Log out</button>
+      </div>
+      <div class="credit">
+        <div class="credit-avatar">AB</div>
+        <div class="credit-text">
+          <div class="credit-name">Arnob Bokshi</div>
+          <div class="credit-role">Automation Engineer · Tex Zippers (BD) Ltd.</div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="lib/pdf.min.js"></script>
+  <script src="pdf_reader.js"></script>
+  <script src="auth.js"></script>
+  <script src="groq_extraction.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
